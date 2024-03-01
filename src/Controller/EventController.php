@@ -36,10 +36,10 @@ class EventController extends AbstractController
     {
         $event = new Event();
 
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
+        $eventForm = $this->createForm(EventType::class, $event);
+        $eventForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($eventForm->isSubmitted() && $eventForm->isValid()){
             $slug = $slugger->slug($event->getName()) . '-' . uniqid();
             $event->setSlug($slug);
 
@@ -50,7 +50,7 @@ class EventController extends AbstractController
         }
 
         return $this->render('event/create.html.twig', [
-            'eventForm' => $form->createView()
+            'eventForm' => $eventForm->createView(),
         ]);
     }
 
@@ -73,10 +73,12 @@ class EventController extends AbstractController
     }
 
     #[Route('/event/delete/{id}', name: 'app_event_delete')]
-    public function delete(EntityManagerInterface $em, Event $event): Response
+    public function delete(EntityManagerInterface $em, Event $event, Request $request): Response
     {
-        $em->remove($event);
-        $em->flush();
+        if ($this->isCsrfTokenValid('delete' . $event->getId(), $request->request->get('csrf'))){
+            $em->remove($event);
+            $em->flush();
+        }
 
         return $this->redirectToRoute('app_event');
     }
