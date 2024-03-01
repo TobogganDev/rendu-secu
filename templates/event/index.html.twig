@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="w-full text-end mt-8">
+            <a href="{{ path('app_event_create') }}" class="text-xl uppercase p-2 rounded-md bg-custom-brown text-custom-beige">Create an event</a>
+        </div>
+    {% endif %}
+    <div class="grid grid-cols-3 gap-8 mt-12">
+        {% for event in events %}
+            <div class="p-4 border border-custom-brown flex flex-col">
+                <h3 class="font-semibold capitalize text-2xl">{{ event.name }}</h3>
+                <ul class="flex gap-2">
+                    {% for artist in event.artists %}
+                        <li>{{ artist.firstname }} {{ artist.lastname }},</li>
+                    {% endfor %}
+                </ul>
+                <p class="opacity-60">{{ event.date|date('d/m/Y') }}</p>
+                <div class="mt-auto">
+                    <a href="{{ path('app_event_show', {slug: event.slug}) }}" class="uppercase text-xs underline font-semibold">See event</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <form action="{{ path('app_event_delete', {id: event.id}) }}" method="post">
+                            <input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ event.id) }}">
+                            <input type="submit" value="Delete">
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

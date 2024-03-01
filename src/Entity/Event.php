@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,11 +28,16 @@ class Event
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
-    private array $artists = [];
-
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
+
+    #[ORM\ManyToMany(targetEntity: Artist::class, inversedBy: 'events')]
+    private Collection $artists;
+
+    public function __construct()
+    {
+        $this->artists = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,18 +92,6 @@ class Event
         return $this;
     }
 
-    public function getArtists(): array
-    {
-        return $this->artists;
-    }
-
-    public function setArtists(array $artists): static
-    {
-        $this->artists = $artists;
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -105,6 +100,30 @@ class Event
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Artist>
+     */
+    public function getArtists(): Collection
+    {
+        return $this->artists;
+    }
+
+    public function addArtist(Artist $artist): static
+    {
+        if (!$this->artists->contains($artist)) {
+            $this->artists->add($artist);
+        }
+
+        return $this;
+    }
+
+    public function removeArtist(Artist $artist): static
+    {
+        $this->artists->removeElement($artist);
 
         return $this;
     }

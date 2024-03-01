@@ -2,9 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Artist;
 use App\Entity\Event;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,14 @@ class EventType extends AbstractType
             ->add('place')
             ->add('date')
             ->add('price')
-            ->add('artists')
-            ->add('add', SubmitType::class)
+            ->add('artists', EntityType::class, [
+                'class' => Artist::class,
+                'choice_label' => function (Artist $artist): string{
+                    return $artist->getFirstName() . ' ' . $artist->getLastName();
+                },
+                'multiple' => true,
+                'expanded' => true,
+            ])
         ;
     }
 
