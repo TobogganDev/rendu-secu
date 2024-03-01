@@ -5,7 +5,17 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'custom-brown': '#876445'
+      },
+      textColor: {
+        'custom-beige': '#F9E0BB'
+      },
+      borderColor: {
+        'custom-brown': '#876445'
+      }
+    },
   },
   plugins: [],
 }

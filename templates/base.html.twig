@@ -5,13 +5,37 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+        </style>
     </head>
     <body>
+        <header class="flex items-center justify-between pb-4 border-b-2 border-custom-brown">
+            <div class="flex gap-8 items-center">
+                <h1 class="font-bold text-5xl uppercase">Events</h1>
+                <a href="{{ path('app_event') }}">Home</a>
+            </div>
+            <nav>
+                <ul class="flex items-center gap-8">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="py-2 px-4 bg-custom-brown rounded-full text-custom-beige">
+                            <a href="{{ path('app_logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('app_login') }}">Login</a></li>
+                        <li class="py-2 px-4 bg-custom-brown rounded-full text-custom-beige"><a href="{{ path('app_register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>
+

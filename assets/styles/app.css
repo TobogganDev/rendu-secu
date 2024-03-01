@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: #F9E0BB;
+    padding: 2rem 4rem;
+    color: #876445;
+    font-family: "Oswald", sans-serif;
+}
+
+.input-event {
+    padding: .5rem;
+    border-radius: .5rem;
+    font-weight: normal;
+}
