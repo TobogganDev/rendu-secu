@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="w-full h-full flex flex-col gap-12 mt-12">
+        <h1>Edit Event</h1>
+
+        {{ form_start(editForm) }}
+            <div class="flex gap-8">
+                <div class="flex flex-col gap-2 mb-4 w-full font-semibold">
+                    {{ form_label(editForm.name) }}
+                    <input type="text" name="{{ field_name(editForm.name) }}" value="{{ field_value(editForm.name) }}" placeholder="{{ field_label(editForm.name) }}" class="input-event">
+                    {{ form_errors(editForm.name) }}
+                </div>
+                <div class="flex flex-col gap-2 mb-4 w-full font-semibold">
+                    {{ form_label(editForm.place) }}
+                    <input type="text" name="{{ field_name(editForm.place) }}" value="{{ field_value(editForm.place) }}" placeholder="{{ field_label(editForm.place) }}" class="input-event">
+                    {{ form_errors(editForm.name) }}
+                </div>
+            </div>
+            <div class="flex gap-8">
+                <div class="flex flex-col gap-2 mb-4 w-full font-semibold">
+                    {{ form_label(editForm.date) }}
+                    <input type="date" name="{{ field_name(editForm.date) }}" value="{{ field_value(editForm.date) }}" placeholder="{{ field_label(editForm.date) }}" class="input-event">
+                    {{ form_errors(editForm.date) }}
+                </div>
+                <div class="flex flex-col gap-2 mb-4 w-full font-semibold">
+                    {{ form_label(editForm.price) }}
+                    <input type="text" name="{{ field_name(editForm.price) }}" value="{{ field_value(editForm.price) }}" placeholder="{{ field_label(editForm.price) }}" class="input-event">
+                    {{ form_errors(editForm.name) }}
+                </div>
+            </div>
+            <button class="btn btn-primary">Save changes</button>
+        {{ form_end(editForm) }}
+
+        <a href="{{ path('app_event_show', {slug: event.slug}) }}">Back to event</a>
+    </div>
+{% endblock %}
